@@ -37,38 +37,62 @@ resource "azurerm_virtual_network" "vnet" {
   tags                = var.tags
 }
 
-resource "azurerm_virtual_machine" "vm" {
-  name                  = local.vm_name
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.nic.id]
-  vm_size               = "Standard_DS1_v2"
-  tags                  = var.tags
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                = local.vm_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  size                = "Standard_DS1_v2"
+  tags                = var.tags
 
-  storage_os_disk {
-    name              = "osdisk-demo"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  admin_username                  = var.username
+  disable_password_authentication = false
+  admin_password                  = var.password
+
+  network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts-gen2"
     version   = "latest"
   }
+}
 
-  os_profile {
-    computer_name  = local.vm_name
-    admin_username = var.username
-    admin_password = var.password
+resource "azurerm_linux_virtual_machine" "vm2" {
+  name                = "vm-demo-2"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  size                = "Standard_DS1_v2"
+  tags                = var.tags
+
+  admin_username                  = var.username
+  disable_password_authentication = false
+  admin_password                  = var.password
+
+  network_interface_ids = [
+    azurerm_network_interface.nic2.id,
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  os_profile_linux_config {
-    disable_password_authentication = false
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts-gen2"
+    version   = "latest"
   }
 }
+
 
 resource "azurerm_network_interface" "nic" {
   name                = local.nic_name
@@ -80,6 +104,19 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.public_ip.id
+  }
+}
+
+resource "azurerm_network_interface" "nic2" {
+  name                = "nic-demo-2"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  tags                = var.tags
+  ip_configuration {
+    name                          = "ipconfig-demo-2"
+    subnet_id                     = azurerm_subnet.subnet.id
+    private_ip_address_allocation = "Static"
+    private_ip_address = "10.0.1.10"    
   }
 }
 
