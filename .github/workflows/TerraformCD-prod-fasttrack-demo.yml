@@ -82,8 +82,8 @@ jobs:
         run: |
           {
             echo "LOCATION=northeurope"
-            echo "RESOURCE_GROUP_NAME=rg-timdemotf-prod"
-            echo "STORAGE_ACCOUNT_NAME=timdemoftprod2025dsa"
+            echo "RESOURCE_GROUP_NAME=rg-tssfasttrack-prod"
+            echo "STORAGE_ACCOUNT_NAME=sttssfasttrackprod"
             echo "STORAGE_ACCOUNT_TIER=Standard"
             echo "STORAGE_ACCOUNT_REPLICATION_TYPE=LRS"
             echo "CONTAINER_NAME=appdata-prod"
