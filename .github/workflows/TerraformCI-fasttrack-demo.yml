@@ -75,6 +75,7 @@ jobs:
             -backend-config="../environments/dev/backend-dev.hcl" \
             -input=false \
             -no-color
+            -reconfigure
       
       - name: Terraform Validate
         id: validate
