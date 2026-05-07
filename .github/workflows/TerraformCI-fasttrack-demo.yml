@@ -5,7 +5,7 @@ on:
     branches: 
       - main
     paths:
-      - "iac-fasttrack/terraform/**"
+      - "iac-fasttrack-DEMO/terraform/**"
   workflow_dispatch:
 
 permissions:
@@ -48,17 +48,17 @@ jobs:
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID_TISIP }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID_TISIP }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_TISIP }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Configure Terraform Azure Backend
         run: |
           {
             echo "ARM_USE_OIDC=true"
-            echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID_TISIP }}"
-            echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID_TISIP }}"
-            echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID_TISIP }}"
+            echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}"
+            echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}"
+            echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           } >> "$GITHUB_ENV"
 
       - name: Terraform Format Check
@@ -125,17 +125,17 @@ jobs:
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID_TISIP }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID_TISIP }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_TISIP }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Configure Terraform Azure Backend
         run: |
           {
             echo "ARM_USE_OIDC=true"
-            echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID_TISIP }}"
-            echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID_TISIP }}"
-            echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID_TISIP }}"
+            echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}"
+            echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}"
+            echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           } >> "$GITHUB_ENV"
       
       - name: Configure Environment Variables
@@ -145,8 +145,8 @@ jobs:
             dev)
               {
                 echo "LOCATION=northeurope"
-                echo "RESOURCE_GROUP_NAME=rg-timdemotf-dev"
-                echo "STORAGE_ACCOUNT_NAME=timdemoftdev2025dsa"
+                echo "RESOURCE_GROUP_NAME=rg-tssfasttrack-dev"
+                echo "STORAGE_ACCOUNT_NAME=sttssfasttrackdev"
                 echo "STORAGE_ACCOUNT_TIER=Standard"
                 echo "STORAGE_ACCOUNT_REPLICATION_TYPE=LRS"
                 echo "CONTAINER_NAME=appdata-dev"
@@ -156,8 +156,8 @@ jobs:
             test)
               {
                 echo "LOCATION=northeurope"
-                echo "RESOURCE_GROUP_NAME=rg-timdemotf-test"
-                echo "STORAGE_ACCOUNT_NAME=timdemofttest2025dsa"
+                echo "RESOURCE_GROUP_NAME=rg-tssfasttrack-test"
+                echo "STORAGE_ACCOUNT_NAME=sttssfasttracktest"
                 echo "STORAGE_ACCOUNT_TIER=Standard"
                 echo "STORAGE_ACCOUNT_REPLICATION_TYPE=LRS"
                 echo "CONTAINER_NAME=appdata-test"
@@ -167,8 +167,8 @@ jobs:
             prod)
               {
                 echo "LOCATION=northeurope"
-                echo "RESOURCE_GROUP_NAME=rg-timdemotf-prod"
-                echo "STORAGE_ACCOUNT_NAME=timdemofttest2025dsa"
+                echo "RESOURCE_GROUP_NAME=rg-tssfasttrack-prod"
+                echo "STORAGE_ACCOUNT_NAME=sttssfasttrackprod"
                 echo "STORAGE_ACCOUNT_TIER=Standard"
                 echo "STORAGE_ACCOUNT_REPLICATION_TYPE=GRS"
                 echo "CONTAINER_NAME=appdata-prod"
