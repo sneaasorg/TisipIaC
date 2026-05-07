@@ -129,8 +129,8 @@ jobs:
         run: |
           {
             echo "LOCATION=northeurope"
-            echo "RESOURCE_GROUP_NAME=rg-storage-test"
-            echo "STORAGE_ACCOUNT_NAME=sttest6391"
+            echo "RESOURCE_GROUP_NAME=rg-tssfasttrack-test"
+            echo "STORAGE_ACCOUNT_NAME=sttssfasttrackdev"
             echo "STORAGE_ACCOUNT_TIER=Standard"
             echo "STORAGE_ACCOUNT_REPLICATION_TYPE=LRS"
             echo "CONTAINER_NAME=appdata-test"
