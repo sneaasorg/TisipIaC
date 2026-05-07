@@ -35,31 +35,31 @@ jobs:
     name: 🔍 Pre-Deployment Validation
     runs-on: ubuntu-latest
     outputs:
-      dev_healthy: ${{ steps.check_dev.outputs.healthy }}
+      test_healthy: ${{ steps.check_test.outputs.healthy }}
       can_proceed: ${{ steps.decision.outputs.can_proceed }}
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Check Dev Environment Health
-        id: check_dev
+      - name: Check test Environment Health
+        id: check_test
         run: |
-          echo "Checking if Dev environment is healthy..."
-          # In real scenario, you would check actual dev environment status
+          echo "Checking if test environment is healthy..."
+          # In real scenario, you would check actual test environment status
           # For now, we'll assume it's healthy
           echo "healthy=true" >> $GITHUB_OUTPUT
-          echo "✅ Dev environment is healthy"
+          echo "✅ test environment is healthy"
       
       - name: Verify Prerequisites
         id: decision
         run: |
-          if [ "${{ steps.check_dev.outputs.healthy }}" == "true" ]; then
+          if [ "${{ steps.check_test.outputs.healthy }}" == "true" ]; then
             echo "can_proceed=true" >> $GITHUB_OUTPUT
             echo "✅ All prerequisites met - can proceed with Test deployment"
           else
             echo "can_proceed=false" >> $GITHUB_OUTPUT
-            echo "❌ Prerequisites not met - Dev environment issues detected"
+            echo "❌ Prerequisites not met - test environment issues detected"
             exit 1
           fi
       
@@ -71,7 +71,7 @@ jobs:
           echo "**Requested by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "**Reason:** ${{ github.event.inputs.deployment_reason }}" >> $GITHUB_STEP_SUMMARY
           echo "**Timestamp:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "**Dev Health Check:** ${{ steps.check_dev.outputs.healthy }}" >> $GITHUB_STEP_SUMMARY
+          echo "**test Health Check:** ${{ steps.check_test.outputs.healthy }}" >> $GITHUB_STEP_SUMMARY
 
   deploy-test:
     name: 🧪 Deploy to Test
@@ -140,7 +140,7 @@ jobs:
         working-directory: ${{ env.WORKDIR }}/terraform
         run: |
           terraform init \
-            -backend-config="../environments/dev/backend-test.hcl" \
+            -backend-config="../environments/test/backend-test.hcl" \
             -input=false \
             -reconfigure \
             -no-color
